@@ -145,12 +145,48 @@
 </div>
 
 <script>
+    
     function calculateTickets() {
         const amount = document.getElementById('amount').value;
         const ticketPrice = 2500;
         const count = Math.floor(amount / ticketPrice);
         document.getElementById('ticketDisplay').innerText = count + " ዕጣ";
     }
+
+    // ከ Render Backend ጋር የሚያገናኘው አዲሱ ኮድ
+    document.getElementById('lotteryForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // ገጹ ሪፍሬሽ እንዳይሆን
+
+        const fullName = document.getElementById('fullName').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const amount = document.getElementById('amount').value;
+
+        // ያንተ የ Render ሰርቨር ሊንክ
+        const backendUrl = "https://lottery-app-vw17.onrender.com/api/pay";
+
+        try {
+            const response = await fetch(backendUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ fullName, phoneNumber, amount })
+            });
+
+            const data = await response.json();
+
+            if (data.checkout_url) {
+                // በቀጥታ ወደ Chapa የክፍያ ገጽ ይወስደዋል
+                window.location.href = data.checkout_url;
+            } else {
+                alert("ስህተት፦ " + (data.error || "ክፍያ መጀመር አልተቻለም"));
+            }
+        } catch (error) {
+            alert("ከሰርቨር ጋር መገናኘት አልተቻለም።");
+        }
+    });
+
+
 </script>
 
 </body>
