@@ -42,8 +42,6 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 30px 25px;
         }
-        
-        /* የላይኛው Header እና የ CSS Logo ክፍል */
         .brand-header {
             text-align: center;
             margin-bottom: 30px;
@@ -52,8 +50,6 @@
             align-items: center;
             gap: 12px;
         }
-        
-        /* ፎቶ ሳይጠቀም የተሰራ ውብ ባለ ቀለም ሎጎ */
         .app-logo {
             width: 65px;
             height: 65px;
@@ -66,13 +62,11 @@
             box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4);
             animation: pulse 2s infinite;
         }
-        
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.04); }
             100% { transform: scale(1); }
         }
-
         .brand-header h1 {
             font-size: 32px;
             font-weight: 900;
@@ -87,8 +81,6 @@
             font-size: 14px;
             margin-top: 2px;
         }
-
-        /* ባለቀለም ማስታወሻ ሳጥን */
         .info-box {
             background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.05));
             border-left: 4px solid #f59e0b;
@@ -109,7 +101,7 @@
             font-size: 14px;
             font-weight: 600;
         }
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 14px;
             border: 1px solid #475569;
@@ -120,12 +112,10 @@
             outline: none;
             transition: all 0.3s ease;
         }
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus {
             border-color: #ec4899;
             box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
         }
-        
-        /* የዕጣ ማሳያ ባለቀለም ሳጥን */
         .result-box {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
             border: 2px dashed #475569;
@@ -141,13 +131,11 @@
             margin-bottom: 6px;
         }
         .result-count {
-            color: #10b981;
+            color: #f59e0b;
             font-size: 34px;
             font-weight: 800;
-            text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
         }
-        
-        /* Colorful Submit Button */
         .submit-btn {
             width: 100%;
             background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%);
@@ -165,9 +153,6 @@
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5);
             transform: translateY(-1px);
         }
-        .submit-btn:active {
-            transform: translateY(1px);
-        }
     </style>
 </head>
 <body>
@@ -181,7 +166,7 @@
         </div>
 
         <div class="info-box">
-            💡 <strong>ማስታወሻ፦</strong> የአንድ ዕጣ ዋጋ <strong>2500 ብር</strong> ነው። የሚጫወቱት ገንዘብ ታስቦ በደረጃው የዕጣ ቁጥር ይሰጥዎታል።
+            💡 <strong>ማስታወሻ፦</strong> የአንድ ዕጣ (ትኬት) ዋጋ <strong>2500 ብር</strong> ነው። የሚገዙትን የዕጣ ብዛት ሲያስገቡ ጠቅላላ ክፍያው በራሱ ይባዛል።
         </div>
 
         <form id="lotteryForm">
@@ -196,18 +181,13 @@
             </div>
 
             <div class="form-group">
-                <label for="amount">የገንዘብ መጠን (በብር)</label>
-                <select id="amount">
-                    <option value="2500">2,500 ብር (1 ዕጣ)</option>
-                    <option value="5000">5,000 ብር (2 ዕጣ)</option>
-                    <option value="7500">7,500 ብር (3 ዕጣ)</option>
-                    <option value="10000">10,000 ብር (4 ዕጣ)</option>
-                </select>
+                <label for="ticketCount">የሚገዙት የዕጣ (ትኬት) ብዛት</label>
+                <input type="number" id="ticketInput" min="1" value="1" placeholder="የዕጣ ብዛት ያስገቡ" required>
             </div>
 
             <div class="result-box" id="resBox">
-                <div class="result-title">የሚያገኙት የዕጣ ብዛት፦</div>
-                <div class="result-count" id="ticketCount">1 ዕጣ</div>
+                <div class="result-title">ጠቅላላ የሚከፈለው ገንዘብ፦</div>
+                <div class="result-count" id="totalAmountDisplay">2,500 ብር</div>
             </div>
 
             <button type="submit" class="submit-btn">ክፍያ ፈጽም (በ Chapa)</button>
@@ -215,18 +195,23 @@
     </div>
 
     <script>
-        const amountSelect = document.getElementById('amount');
-        const ticketCountDisplay = document.getElementById('ticketCount');
+        const ticketInput = document.getElementById('ticketInput');
+        const totalAmountDisplay = document.getElementById('totalAmountDisplay');
         const form = document.getElementById('lotteryForm');
         const resBox = document.getElementById('resBox');
 
-        amountSelect.addEventListener('change', (e) => {
-            const tickets = e.target.value / 2500;
-            ticketCountDisplay.textContent = `${tickets} ዕጣ`;
+        const TICKET_PRICE = 2500;
+
+        // ተጠቃሚው ቁጥር በጻፈ ቁጥር ብሩን በ 2500 እያባዛ የሚያሳይ
+        ticketInput.addEventListener('input', (e) => {
+            let count = parseInt(e.target.value) || 0;
+            if (count < 1) count = 1; // ከ 1 በታች እንዳይሆን መከላከያ
             
-            // ለየት ያለ Colorful የጭብጨባ ውጤት ለማሳየት
+            const total = count * TICKET_PRICE;
+            totalAmountDisplay.textContent = `${total.toLocaleString()} ብር`;
+            
             resBox.style.borderColor = '#ec4899';
-            setTimeout(() => resBox.style.borderColor = '#475569', 400);
+            setTimeout(() => resBox.style.borderColor = '#475569', 300);
         });
 
         form.addEventListener('submit', async (e) => {
@@ -234,14 +219,15 @@
             
             const fullName = document.getElementById('fullName').value;
             const phoneNumber = document.getElementById('phoneNumber').value;
-            const amount = amountSelect.value;
+            const ticketCount = parseInt(ticketInput.value) || 1;
+            const finalAmount = ticketCount * TICKET_PRICE; // ጠቅላላ የሚላከው ብር
 
             try {
                 // *** እዚህ ጋር የራስህን የ RENDER ሰርቨር ሊንክ ማስገባትህን እርግጠኛ ሁን ***
                 const response = await fetch('https://የአንተ-ሰርቨር-ስም.onrender.com/api/pay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fullName, phoneNumber, amount })
+                    body: JSON.stringify({ fullName, phoneNumber, amount: finalAmount })
                 });
 
                 const data = await response.json();
