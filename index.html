@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የዕጣ ቁጥር መግዣ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .app-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .info-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid #3498db;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #3498db;
+        }
+        .ticket-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px dashed #b2bec3;
+        }
+        .ticket-count {
+            font-size: 28px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #219653;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1>የዕጣ ቁጥር መግዣ</h1>
+        <p>የፈለጉትን ያህል ዕጣ በመግዛት የእድሉ ተጠቃሚ ይሁኑ</p>
+    </div>
+
+    <div class="info-box">
+        💡 <strong>ማስታወሻ፦</strong> የአንድ ዕጣ ዋጋ <strong>2500 ብር</strong> ነው። ያጫወቱት ገንዘብ ታስቦ በደረጃው የዕጣ ቁጥር ይሰጥዎታል።
+    </div>
+
+    <form id="lotteryForm">
+        <div class="form-group">
+            <label for="fullName">ሙሉ ስም</label>
+            <input type="text" id="fullName" placeholder="እባክዎ ስምዎን ያስገቡ" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">ስልክ ቁጥር</label>
+            <input type="tel" id="phoneNumber" placeholder="09........" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">የገንዘብ መጠን (በብር)</label>
+            <select id="amount" onchange="calculateTickets()">
+                <option value="2500">2,500 ብር (1 ዕጣ)</option>
+                <option value="5000">5,000 ብር (2 ዕጣ)</option>
+                <option value="7500">7,500 ብር (3 ዕጣ)</option>
+                <option value="10000">10,000 ብር (4 ዕጣ)</option>
+            </select>
+        </div>
+
+        <div class="ticket-summary">
+            <div>የሚያገኙት የዕጣ ብዛት፦</div>
+            <div class="ticket-count" id="ticketDisplay">1 ዕጣ</div>
+        </div>
+
+        <button type="submit" class="submit-btn">ክፍያ ፈጽም (በ Chapa)</button>
+    </form>
+</div>
+
+<script>
+    function calculateTickets() {
+        const amount = document.getElementById('amount').value;
+        const ticketPrice = 2500;
+        const count = Math.floor(amount / ticketPrice);
+        document.getElementById('ticketDisplay').innerText = count + " ዕጣ";
+    }
+</script>
+
+</body>
+</html>
