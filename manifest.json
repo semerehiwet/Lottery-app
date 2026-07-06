@@ -1,0 +1,21 @@
+{
+  "short_name": "EthioScholar",
+  "name": "EthioScholar Hub Lottery",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2311/2311736.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2311/2311736.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#111827",
+  "display": "standalone",
+  "theme_color": "#111827",
+  "orientation": "portrait"
+}
