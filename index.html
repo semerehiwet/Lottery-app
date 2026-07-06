@@ -149,10 +149,6 @@
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
-        .submit-btn:hover {
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5);
-            transform: translateY(-1px);
-        }
     </style>
 </head>
 <body>
@@ -181,7 +177,7 @@
             </div>
 
             <div class="form-group">
-                <label for="ticketCount">የሚገዙት የዕጣ (ትኬት) ብዛት</label>
+                <label for="ticketInput">የሚገዙት የዕጣ (ትኬት) ብዛት</label>
                 <input type="number" id="ticketInput" min="1" value="1" placeholder="የዕጣ ብዛት ያስገቡ" required>
             </div>
 
@@ -202,10 +198,9 @@
 
         const TICKET_PRICE = 2500;
 
-        // ተጠቃሚው ቁጥር በጻፈ ቁጥር ብሩን በ 2500 እያባዛ የሚያሳይ
         ticketInput.addEventListener('input', (e) => {
             let count = parseInt(e.target.value) || 0;
-            if (count < 1) count = 1; // ከ 1 በታች እንዳይሆን መከላከያ
+            if (count < 1) count = 1;
             
             const total = count * TICKET_PRICE;
             totalAmountDisplay.textContent = `${total.toLocaleString()} ብር`;
@@ -220,7 +215,7 @@
             const fullName = document.getElementById('fullName').value;
             const phoneNumber = document.getElementById('phoneNumber').value;
             const ticketCount = parseInt(ticketInput.value) || 1;
-            const finalAmount = ticketCount * TICKET_PRICE; // ጠቅላላ የሚላከው ብር
+            const finalAmount = ticketCount * TICKET_PRICE;
 
             try {
                 // *** እዚህ ጋር የራስህን የ RENDER ሰርቨር ሊንክ ማስገባትህን እርግጠኛ ሁን ***
@@ -231,7 +226,6 @@
                 });
 
                 const data = await response.json();
-                
                 if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
